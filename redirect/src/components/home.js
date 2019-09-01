@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import app from "firebase/app"
 import firebase from 'firebase'
 import "../App.css"
+import { Spinner } from 'reactstrap';
 const config = {
     apiKey: "AIzaSyBL5QaQYXNqfnHqPXKewifQG0gd-VDYqMA",
     authDomain: "ppsu-52213.firebaseapp.com",
@@ -136,7 +137,9 @@ export default class Home extends Component {
     render() {
         if(this.props.history.location.search.startsWith('?redirect=') ){
             return (<div>
-                loading
+                 <div className="load">
+                   <center> <Spinner className="spins" color="dark"/></center> 
+                </div>
             </div>)
         }
         else
