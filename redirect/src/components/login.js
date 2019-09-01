@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 
-export default class Test extends Component{
+export default class Login extends Component{
 
     state={
         username:"",
-        password:""
+        password:"",
+        isLogin:false
     }
 
     handleInput = (event) => {
@@ -13,21 +14,25 @@ export default class Test extends Component{
 
     onSubmit = (event) => {
         event.preventDefault()
-        this.props.history.push('/')
+        if(this.state.username === "noppadol" && this.state.password === "sangngam"){
+            this.setState({isLogin:true})
+            localStorage.setItem('isLogin', this.state.isLogin);
+            this.props.history.push('/')
+        }
     }
 
     render(){
         return(
         <div className="bodyLogin">
         <div className="container-fluid">
-            <div style={{margin: "10px"}}>
-            {/* <img width="189" height="71"
+            <div>
+            <img width="189" height="71"
                 src="https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN.png"
                 data-src="https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN.png"
                 className="custom-logo lazyloaded" alt="PSU Phuket" itemProp="logo"
-                data-srcSet="https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN.png 1895w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-300x113.png 300w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-768x289.png 768w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-1024x385.png 1024w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-350x132.png 350w"
+                data-srcset="https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN.png 1895w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-300x113.png 300w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-768x289.png 768w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-1024x385.png 1024w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-350x132.png 350w"
                 data-sizes="(max-width: 1895px) 100vw, 1895px" sizes="(max-width: 1895px) 100vw, 1895px"
-                srcSet="https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN.png 1895w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-300x113.png 300w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-768x289.png 768w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-1024x385.png 1024w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-350x132.png 350w"/> */}
+                srcSet="https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN.png 1895w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-300x113.png 300w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-768x289.png 768w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-1024x385.png 1024w, https://www.phuket.psu.ac.th/wp-content/uploads/2019/03/cropped-PSU_PHUKET-EN-350x132.png 350w"/>
             <div className="login-page">
                 <div className="form">
                     <form className="login-form" onSubmit={this.onSubmit}>
