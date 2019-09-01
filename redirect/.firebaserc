@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "psumaterial1"
+    "default": "psumaterial1",
+    "y": "psupktmaterial"
   }
 }
