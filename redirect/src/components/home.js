@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import app from "firebase/app"
 import firebase from 'firebase'
-
+import "../App.css"
 const config = {
     apiKey: "AIzaSyBL5QaQYXNqfnHqPXKewifQG0gd-VDYqMA",
     authDomain: "ppsu-52213.firebaseapp.com",
@@ -26,10 +26,13 @@ export default class Home extends Component {
                     inputSearch:"",
                     allData:[]
         }
-       app.initializeApp(config)
+       //app.initializeApp(config)
    }
 
    componentDidMount = async () => {
+    if (!firebase.apps.length) {
+        app.initializeApp(config);
+    }
     if(this.props.history.location.search.startsWith('?redirect=')){
         let query = this.props.history.location.search.split('?redirect=')
         await firebase.database().ref("myURL/"+query[1]).once('value', async (snapshot) => {
@@ -40,7 +43,11 @@ export default class Home extends Component {
                 
             }
         })
-    }else{
+    } else if (!localStorage.getItem('isLogin')) {
+        this.props.history.push('/login')
+    }
+    
+    else{
         await firebase.database().ref("listNumber").once('value', async (snapshot) => {
             if (snapshot.exists()) {
                 await this.setState({lastNumber:parseInt(snapshot.val().number)})
