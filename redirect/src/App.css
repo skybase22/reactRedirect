@@ -2,12 +2,16 @@
   text-align: center;
 }
 
+#root {
+  min-width: 576px;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
 }
-
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -35,7 +39,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .login-page {
-  width: 360px;
+  width: 100%;
   padding: 8% 0 0;
   margin: auto;
 }
@@ -131,30 +135,32 @@
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height:100% !important;      
+  height:100vh !important;   
+    
 }
-.btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show>.btn-success.dropdown-toggle {
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
     color: #fff !important;
     background-color: #003c71 !important;
     border-color: #003c71 !important;
 }
 
-.btn-success:focus {
+.btn-primary:focus {
     box-shadow: 0 0 0 0.2rem rgba(6, 243, 247, 0.5) !important;
 }
 
-.btn-success:hover {
+.btn-primary:hover {
     color: #fff;
     background-color: #3ebff5 !important;
     border-color: #3ebff5 !important;
 }
 :root {
-    --success: #3ebff5 !important;
+    --primary: #3ebff5 !important;
     --green: #3ebff5 !important;
 }
 
 table {
-  overflow-x:auto;
+  overflow-x:scroll !important;
+  overflow-y: hidden; 
   table-layout: fixed;
 }
 
@@ -164,10 +170,109 @@ td {
   
 }
 
-.spins {
-  margin-top: 25%;
+/* .spins {
+  margin-top: 10%;
+} */
+
+button {
+width: 80px !important;
 }
 
+table.table-fit {
+  width: auto !important;
+  table-layout: auto !important;
+}
+table.table-fit thead th, table.table-fit tfoot th {
+  width: auto !important;
+}
+table.table-fit tbody td, table.table-fit tfoot td {
+  width: auto !important;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.inputBlock {
+  display: inline-block;
+  padding: 16px 17px;
+
+}
+
+.inputBlock-line {
+  padding: 16px 17px;
+}
+
+.freebirdFormviewerViewItemsItemItemTitle {
+  color: #000;
+  font-size: 20px;
+  line-height: 135%;
+  width: 100%;
+  word-break: break-word;
+  padding-bottom: 16px;
+}
+
+.rounded mx-auto d-block {
+  max-width: 100%;
+  height: auto;
+
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.form-control {
+  max-width: 100% !important;
+  min-width: auto !important;
+}
+
+.inputL  {
+  border: none;
+  border-bottom: 2px solid #c1c1c1;
+  border-radius: 0;
+}
+.inputL:hover {
+  border-bottom: 2px solid #3a52cb;
+}
+
+.inputL:active {
+  outline: 0;
+}
+
+.inputL:focus {
+
+  border-bottom: 2px solid #9faef8;
+
+  box-shadow: none;
+}
+
+.spanFont {
+  font-size: 14px;
+  color: #828282;
+} 
+
+.inputWidth {
+  max-width: auto !important;
+}
+
+.bd-example {
+  position: relative;
+  padding: 1rem;
+  margin: 1rem -15px 0;
+  border: solid #f8f9fa;
+  border-width: .2rem 0 0;
+}
+
+@media (min-width: 1076px){
+  .bd-example {
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    border-width: .2rem;
+}
+} 
 
 
 

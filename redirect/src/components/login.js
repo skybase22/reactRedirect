@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-
+import { firebase } from '../firebase'
 export default class Login extends Component{
 
     state={
         username:"",
         password:"",
+        hashPassword:"",
         isLogin:false
     }
 
@@ -12,18 +13,22 @@ export default class Login extends Component{
         this.setState({[event.target.name]:event.target.value})
     }
 
-    onSubmit = (event) => {
+    onSubmit = async (event) => {
+        
         event.preventDefault()
-        if(this.state.username === "noppadol" && this.state.password === "sangngam"){
-            this.setState({isLogin:true})
-            localStorage.setItem('isLogin', this.state.isLogin);
-            this.props.history.push('/')
-        }
+        let database = firebase.database().ref("Addmin");
+            database.once('value', async (snapshot) => {
+                        if(this.state.username === snapshot.val().username && this.state.password === snapshot.val().password){
+                            localStorage.setItem('isLogin', snapshot.val().hashpassword); 
+                            this.props.history.push('/')            
+                        }        
+            })
     }
 
     render(){
         return(
-        <div className="bodyLogin">
+          
+        <div className="bodyLogin" style={{height:"100vh !important"}}>
         <div className="container-fluid">
             <div>
             <img width="189" height="71"

@@ -1,6 +1,9 @@
 {
   "projects": {
-    "default": "psumaterial1",
-    "y": "psupktmaterial"
+    "default": "psupktmaterial",
+    "y": "psupktmaterial",
+    "app": "psumaterial2",
+    "a": "psupktmaterial",
+    "add": "psupktmaterial"
   }
 }

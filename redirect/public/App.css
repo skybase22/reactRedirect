@@ -133,90 +133,60 @@
   -moz-osx-font-smoothing: grayscale;
   height:100% !important;      
 }
-.btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show>.btn-success.dropdown-toggle {
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
     color: #fff !important;
     background-color: #003c71 !important;
     border-color: #003c71 !important;
 }
 
-.btn-success:focus {
+.btn-primary:focus {
     box-shadow: 0 0 0 0.2rem rgba(6, 243, 247, 0.5) !important;
 }
 
-.btn-success:hover {
+.btn-primary:hover {
     color: #fff;
     background-color: #3ebff5 !important;
     border-color: #3ebff5 !important;
 }
 :root {
-    --success: #3ebff5 !important;
+    --primary: #3ebff5 !important;
     --green: #3ebff5 !important;
-}
-/* table */
-/* .table100 {
-    width: 100%;
-    position: relative;
-}
-
-.table100-firstcol {
-    background-color: #fff;
-    position: absolute;
-    z-index: 1000;
-    width: 310px;
-    top: 0;
-    left: 0;
-}
-
-.table100.ver1 tr {
-    border-bottom: 1px solid #f2f2f2;
-}
-
-tr {
-    display: table-row;
-    vertical-align: inherit;
-    border-color: inherit;
 }
 
 table {
-    border-collapse: collapse;
-    border-spacing: 2px;
+  overflow-x:auto;
+  table-layout: fixed;
 }
 
-thead {
-    display: table-header-group;
-    vertical-align: middle;
-    border-color: inherit;
+td {
+  /* overflow-x:auto; */
+  word-wrap: break-word;
+  
 }
 
-.table100.ver1 th {
-    font-family: Roboto-Bold;
-    font-size: 14px;
-    color: #333333;
-    line-height: 1.4;
-    text-transform: uppercase;
+.spins {
+  margin-top: 25%;
 }
 
-.table100 th {
-    padding-top: 21px;
-    padding-bottom: 21px;
+button {
+width: 80px !important;
 }
 
-th {
-    display: table-cell;
-    vertical-align: inherit;
-    font-weight: bold;
-    text-align: -internal-center;
+table.table-fit {
+  width: auto !important;
+  table-layout: auto !important;
+}
+table.table-fit thead th, table.table-fit tfoot th {
+  width: auto !important;
+}
+table.table-fit tbody td, table.table-fit tfoot td {
+  width: auto !important;
 }
 
-tbody {
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
-}
-
-.pagination li:hover{
+.sortable {
   cursor: pointer;
-} */
+}
+
 
 
 
