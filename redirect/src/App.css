@@ -265,14 +265,31 @@ table.table-fit tbody td, table.table-fit tfoot td {
   border-width: .2rem 0 0;
 }
 
-@media (min-width: 1076px){
+@media only screen and (min-width: 375px){
   .bd-example {
     padding: 1.5rem;
     margin-right: 0;
     margin-left: 0;
     border-width: .2rem;
 }
-} 
+}
+
+.block-qrcode {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+}
+
+.qrcode-item {
+  width: 100%;
+  margin: 0 !important;
+  /* display: flex;
+ flex-wrap: wrap; */
+}
+
+
 
 
 

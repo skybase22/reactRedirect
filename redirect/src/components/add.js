@@ -9,6 +9,8 @@ export default class Add extends Component {
         this.state = {
             isFetchLastNumber: false,
             lastNumber: null,
+            isFetchLastLog: false,
+            lastLog: null,
             error: false,
             durableCode: "",
             listMaterial: "",
@@ -26,8 +28,6 @@ export default class Add extends Component {
         }
     }
 
-
-
     handleInput = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
@@ -40,11 +40,19 @@ export default class Add extends Component {
                 await this.setState({ error: true })
             }
         })
+        await firebase.database().ref("listLog").once('value', async (snapshot) => {
+            if (snapshot.exists()) {
+                await this.setState({ lastLog: parseInt(snapshot.val().number) })
+            } else {
+                await this.setState({ error: true })
+            }
+        })
     }
     onUpdate = async (event) => {
         event.preventDefault()
-        if (this.state.lastNumber !== null && this.state.errorMessage === "") {
+        if (this.state.errorMessage === "" && this.state.lastNumber !== null) {
             let newNumber = this.state.lastNumber + 1
+            
             var firebaseRef = firebase.database().ref(`myURL/${newNumber.toLocaleString(undefined, { minimumIntegerDigits: 5 }).replace(',', '')}`);
             let key = newNumber.toLocaleString(undefined, { minimumIntegerDigits: 5 }).replace(',', '')
             firebaseRef.set({
@@ -53,7 +61,7 @@ export default class Add extends Component {
                 listMaterial: this.state.listMaterial,
                 attribute: this.state.attribute,
                 serialNumber: this.state.serialNumber,
-                materialStatus: this.state.materialStatus,
+                materialStatus: "ปกติ",
                 price: this.state.price,
                 storageLocation: this.state.storageLocation,
                 numberPieces: this.state.numberPieces,
@@ -67,11 +75,33 @@ export default class Add extends Component {
             }).then(() => {
             }
             );
+          
             await firebaseRef2.once('value', async (snapshot) => {
                 if (snapshot.exists()) {
                     await this.setState({ lastNumber: parseInt(snapshot.val().number) })
                 }
             })
+            let newLog = this.state.lastLog + 1
+            var firebaseRef3 = firebase.database().ref(`History/${newLog.toLocaleString(undefined, { minimumIntegerDigits: 5 }).replace(',', '')}`);
+            let keyLog = newLog.toLocaleString(undefined, { minimumIntegerDigits: 5 }).replace(',', '')
+            firebaseRef3.set({
+                id: key,
+                action: this.state.namePickUp + " เพิ่มครุภัณฑ์ " + this.state.durableCode,
+                durableCode: this.state.durableCode,
+                listMaterial: this.state.listMaterial,
+                serialNumber: this.state.serialNumber,
+                materialStatus: "ปกติ",
+                dateUpdate: new Date().getFullYear() + '/' + (new Date().getMonth()+1) + '/' + new Date().getDate() +' '+ new Date().getHours()+':'+ new Date().getMinutes()+':'+ new Date().getSeconds(),
+                name: this.state.namePickUp,
+            });
+
+            var firebaseRef4 = firebase.database().ref(`listLog`)
+            await firebaseRef4.set({
+                number: keyLog
+            }).then(() => {
+            }
+            );
+
             this.setState({
                 listMaterial: "",
                 durableCode: "",
@@ -90,13 +120,6 @@ export default class Add extends Component {
         }
     }
 
-    // selectImage = async (e) => {
-    //     if (e.target.files[0]) {
-    //         const image = e.target.files[0]
-    //         this.setState(() => ({ image }))
-    //     }
-    // }
-
     render() {
 
         return (
@@ -107,7 +130,7 @@ export default class Add extends Component {
                     <h2 className="text-center">Add Material</h2>
                 </div>
 
-                <div className="row justify-content-center">
+                <div className="row justify-content-center w-100">
 
                     <div className="col-auto" >
 
@@ -140,7 +163,7 @@ export default class Add extends Component {
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >ราคาต่อหน่วย </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
+                                    <input type="text" className="form-control mb-2 mr-sm-2" pattern="[0-9]*" title="only number"
                                         placeholder="Your Answer" name="price" required onChange={this.handleInput} value={this.state.price} autoComplete="off" />
                                 </div>
 
@@ -152,7 +175,7 @@ export default class Add extends Component {
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >จำนวน </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
+                                    <input type="text" className="form-control mb-2 mr-sm-2" pattern="[0-9]*" title="only number"
                                         placeholder="Your Answer" name="numberPieces" required onChange={this.handleInput} value={this.state.numberPieces} autoComplete="off" />
                                 </div>
 
@@ -172,35 +195,6 @@ export default class Add extends Component {
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >บริษัท/ห้างร้าน/ที่จัดซื้อ </div>
                                     <input type="text" className="form-control mb-2 mr-sm-2"
                                         placeholder="Your Answer" name="company" required onChange={this.handleInput} value={this.state.company} autoComplete="off" />
-                                </div>
-
-                                <div className="inputBlock-line">
-                                    <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >สถานะครุภัณฑ์ </div>
-                                    <div className="inputBlock-line">
-                                        <div className="custom-control custom-radio">
-                                            <input type="radio" id="materialStatus1" required name="materialStatus" className="custom-control-input" value="ปกติ" onChange={this.handleInput}></input>
-                                            <label className="custom-control-label" htmlFor="materialStatus1">ปกติ</label>
-                                        </div>
-                                    </div>
-                                    <div className="inputBlock-line">
-                                        <div className="custom-control custom-radio">
-                                            <input type="radio" id="materialStatus2" required name="materialStatus" className="custom-control-input" value="ชำรุด" onChange={this.handleInput}></input>
-                                            <label className="custom-control-label" htmlFor="materialStatus2">ชำรุด</label>
-                                        </div>
-                                    </div>
-                                    <div className="inputBlock-line">
-                                        <div className="custom-control custom-radio">
-                                            <input type="radio" id="materialStatus3" required name="materialStatus" className="custom-control-input" value="รอจำหน่าย" onChange={this.handleInput}></input>
-                                            <label className="custom-control-label" htmlFor="materialStatus3">รอจำหน่าย</label>
-                                        </div>
-                                    </div>
-                                    <div className="inputBlock-line">
-                                        <div className="custom-control custom-radio">
-                                            <input type="radio" id="materialStatus4" required name="materialStatus" className="custom-control-input" value="โอนย้าย" onChange={this.handleInput}></input>
-                                            <label className="custom-control-label" htmlFor="materialStatus4">โอนย้าย</label>
-
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div className="inputBlock-line">

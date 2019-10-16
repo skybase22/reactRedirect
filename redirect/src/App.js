@@ -6,6 +6,8 @@ import Home from './components/home'
 import Edit from './components/edit'
 import Add from './components/add'
 import Detail from './components/detail'
+import Printqrcode from './components/printqrcode'
+import History from './components/history'
 
 class App extends Component {
 
@@ -34,6 +36,17 @@ class App extends Component {
             exact path='/detail'
             component={Detail}
           />
+
+          <Route
+            exact path='/printqrcode'
+            component={Printqrcode}
+          />
+
+          <Route
+            exact path='/history'
+            component={History}
+          />
+
         </Switch>
       </BrowserRouter>
     );

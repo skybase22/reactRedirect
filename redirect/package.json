@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@syncfusion/ej2-react-grids": "^17.3.16",
     "bootstrap": "^4.3.1",
     "dynamic-qr-code-generator": "^0.1.0",
     "firebase": "^6.5.0",
@@ -16,6 +17,7 @@
     "react-qr-svg": "^2.2.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
+    "react-to-print": "^2.4.0",
     "reactstrap": "^8.0.1"
   },
   "scripts": {

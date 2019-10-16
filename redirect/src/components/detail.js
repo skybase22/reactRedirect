@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { firebase } from '../firebase'
-import { QRGenerator } from 'dynamic-qr-code-generator';
-import { QRCode } from "react-qr-svg";
+import { QRCode } from "react-qr-svg"
 export default class Edit extends Component {
 
     constructor(props) {
@@ -30,13 +29,6 @@ export default class Edit extends Component {
 
     handleInput = (event) => {
         // this.setState({ [event.target.name]: event.target.value })
-    }
-
-    genQR = () => {
-        var pr = { value: `https://psupktmaterial.firebaseapp.com?id=${this.state.keyData}` };
-
-        QRGenerator(pr)
-
     }
 
     componentDidMount = async () => {

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { firebase } from '../firebase'
-import { QRGenerator } from 'dynamic-qr-code-generator';
+import { QRCode } from "react-qr-svg"
 export default class Edit extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            isFetchLastNumber: false,
-            lastNumber: null,
+            isFetchLastLog: false,
+            lastLog: null,
             data: [],
             error: false,
             keyData: "",
@@ -25,7 +25,10 @@ export default class Edit extends Component {
             dateAccept: "",
             namePickUp: "",
             company: "",
-            idMaterial: ""
+            idMaterial: "",
+            urlQR : "",
+            oldStatus : "",
+            newStatus : "",
 
         }
     }
@@ -41,6 +44,9 @@ export default class Edit extends Component {
         }
         if (this.props.history.location.search.startsWith('?id=')) {
             let query = this.props.history.location.search.split('?id=')
+            this.setState({
+                urlQR : "https://psupktmaterial.firebaseapp.com?id=" + query[1]
+            })
             await firebase.database().ref("myURL/" + query[1]).once('value', async (snapshot) => {
                 if (snapshot.exists()) {
                     // window.location.assign(snapshot.val().fullURL)
@@ -61,11 +67,14 @@ export default class Edit extends Component {
                 } else {
                 }
             })
+            this.setState({
+                oldStatus : this.state.materialStatus
+            })
 
         }
-        await firebase.database().ref("listNumber").once('value', async (snapshot) => {
+        await firebase.database().ref("listLog").once('value', async (snapshot) => {
             if (snapshot.exists()) {
-                await this.setState({ lastNumber: parseInt(snapshot.val().number) })
+                await this.setState({ lastLog: parseInt(snapshot.val().number) })
             } else {
                 await this.setState({ error: true })
             }
@@ -80,7 +89,7 @@ export default class Edit extends Component {
 
     onUpdate = async (event) => {
         event.preventDefault()
-
+        let newLog = this.state.lastLog + 1
         if (this.props.history.location.search.startsWith('?id=')) {
             let query = this.props.history.location.search.split('?id=')
             this.setState({
@@ -100,15 +109,27 @@ export default class Edit extends Component {
                 namePickUp: this.state.namePickUp,
                 company: this.state.company
             })
+
+            var firebaseRef2 = firebase.database().ref(`History/${newLog.toLocaleString(undefined, { minimumIntegerDigits: 5 }).replace(',', '')}`);
+            let keyLog = newLog.toLocaleString(undefined, { minimumIntegerDigits: 5 }).replace(',', '')
+            firebaseRef2.set({
+                id: keyLog,
+                action: this.state.namePickUp +" เปลี่ยนสถานะของรหัสครุภัณฑ์ " + this.state.durableCode + " จาก" + this.state.oldStatus + "เป็น" + this.state.materialStatus,
+                durableCode: this.state.durableCode,
+                listMaterial: this.state.listMaterial,
+                serialNumber: this.state.serialNumber,
+                materialStatus: this.state.materialStatus,
+                dateUpdate: new Date().getFullYear() + '/' + (new Date().getMonth()+1) + '/' + new Date().getDate() +' '+ new Date().getHours()+':'+ new Date().getMinutes()+':'+ new Date().getSeconds(),
+                name: this.state.namePickUp,
+            });
+            var firebaseRef4 = firebase.database().ref(`listLog`)
+            await firebaseRef4.set({
+                number: keyLog
+            }).then(() => {
+            }
+            );
             this.props.history.push('/')
         }
-    }
-
-    genQR = () => {
-        var pr = { value: `https://psupktmaterial.firebaseapp.com?id=${this.state.keyData}` };
-
-        QRGenerator(pr)
-
     }
 
     render() {
@@ -122,25 +143,7 @@ export default class Edit extends Component {
                 <div style={{ margin: "20px" }}>
                     <h2 >Material ID : {this.state.keyData}</h2>
                 </div>
-                {/* <div className="row justify-content-center">
-                    <div style={{ margin: "30px" }}>
-                        <div className="col-md-auto">
-                            <form className="form-inline" onSubmit={this.onUpdate}>
-
-                                <label className="mb-2 mr-sm-2">Material :</label>
-                                <input type="text" className="form-control mb-2 mr-sm-2" style={{ width: "500px" }}
-                                    placeholder="Material" name="inputURL" required onChange={this.handleInput} defaultValue={this.state.inputURL} autoComplete="off" />
-
-                                <label className="mb-2 mr-sm-2">Material2 :</label>
-                                <input type="text" className="form-control mb-2 mr-sm-2" style={{ width: "500px" }}
-                                    placeholder="Material2" name="inputURL2" required onChange={this.handleInput} defaultValue={this.state.inputURL2} />
-
-                                <button type="submit" className="btn btn-primary mb-2" style={{ width: "100px" }}>UPDATE</button>
-                            </form>
-                            <small style={{ color: "red", textAlign: "center" }} className="text-center">{this.state.errorMessage !== "" ? this.state.errorMessage : ""}</small>
-                        </div>
-                    </div>
-                </div> */}
+ 
                 <div className="row justify-content-center">
                     <div className="">
                         <form >
@@ -148,7 +151,13 @@ export default class Edit extends Component {
                             <div className="shadow p-3 mb-5 bg-white rounded">
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >QR Code</div>
-                                    <div id="qr-container">{this.genQR()}</div>
+                                    <QRCode
+                                        bgColor="#FFFFFF"
+                                        fgColor="#000000"
+                                        level="Q"
+                                        style={{ width: 256 }}
+                                        value= {this.state.urlQR}
+                                    />
                                 </div>
                                 <div>
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { firebase } from '../firebase'
 import "../App.css"
 import { Spinner } from 'reactstrap';
-import { QRGenerator } from 'dynamic-qr-code-generator';
 export default class Home extends Component {
 
     constructor(props) {
@@ -76,12 +75,6 @@ export default class Home extends Component {
 
     }
 
-    genQR = (pro) => {
-
-        QRGenerator(pro)
-
-    }
-
     render() {
         if (this.props.history.location.search.startsWith('?id=')) {
             return (<div>
@@ -92,11 +85,35 @@ export default class Home extends Component {
         }
         else
             return (
+                <>
+                <nav className="navbar navbar-expand-lg navbar-light bg-light">
 
+                    <a className="navbar-brand" href="/">PSU Material</a>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav ml-auto">
+                            <li className="nav-item active">
+                                <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/printqrcode">QR Code</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/history">History</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
 
                 <div className="container-fluid">
-                    <div className="row justify-content-center" style={{ margin: "3%" }}><h2 > Material</h2>
-                    </div>
+
+                <section className="block-qrcode">
+                        <div className="row justify-content-center" ><h2 > Material</h2>
+                        </div>
+
+                    </section>
                     {/* Table URL */}
 
                     {this.state.error ? (<div style={{ marginTop: "21.56%", marginBottom: "21.56%" }} >
@@ -196,10 +213,6 @@ export default class Home extends Component {
                                     </div>
                                 </div>
 
-
-
-
-
                             </div>
 
 
@@ -207,9 +220,9 @@ export default class Home extends Component {
 
 
                     {/* Search */}
-                  
-                </div>
 
+                </div>
+                </>
             )
     }
 } 
