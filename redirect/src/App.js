@@ -7,7 +7,8 @@ import Edit from './components/edit'
 import Add from './components/add'
 import Detail from './components/detail'
 import Printqrcode from './components/printqrcode'
-import History from './components/history'
+// import History from './components/history'
+import Result from './components/result'
 
 class App extends Component {
 
@@ -43,8 +44,8 @@ class App extends Component {
           />
 
           <Route
-            exact path='/history'
-            component={History}
+            exact path='/result'
+            component={Result}
           />
 
         </Switch>

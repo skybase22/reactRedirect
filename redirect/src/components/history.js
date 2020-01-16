@@ -17,6 +17,20 @@ export default class History extends Component {
 
 
     componentDidMount = async () => {
+
+        if ((localStorage.getItem('isLogin') === null)) {
+            localStorage.setItem('from_page', "/history")
+            localStorage.removeItem("from_id")
+            this.props.history.push('/login')
+        }
+        let databaseToken = firebase.database().ref("users/" + localStorage.getItem('username'));
+        databaseToken.once('value', async (snapshot) => {
+            if (localStorage.getItem('isLogin') !== snapshot.val().token) {
+                localStorage.setItem('from_page', "/history")
+                localStorage.removeItem("from_id")
+                this.props.history.push('/login')
+            }
+        })
         let database = firebase.database().ref("History");
         database.once('value', async (snapshot) => {
             if (snapshot.exists()) {
@@ -58,7 +72,7 @@ export default class History extends Component {
 
         return (
             <div>
-                <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3 ">
+                <nav className="navbar navbar-expand-lg  navbar-dark bg-primary mb-3 ">
 
                     <a className="navbar-brand" href="/">PSU Material</a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +85,9 @@ export default class History extends Component {
                             </li>
                             <li className="nav-item ">
                                 <a className="nav-link" href="/printqrcode">QR Code</a>
+                            </li>
+                            <li className="nav-item ">
+                                <a className="nav-link" href="/result">Result</a>
                             </li>
                             <li className="nav-item active">
                                 <a className="nav-link" href="/history">History<span className="sr-only">(current)</span></a>
@@ -135,7 +152,7 @@ export default class History extends Component {
                                                     arr = this.state.allData.filter((item) => {
                                                         if (item.action.toLowerCase().includes(this.state.inputSearch.toLowerCase())
                                                             || item.dateUpdate.toLowerCase().includes(this.state.inputSearch.toLowerCase())
-                                                            
+
                                                         ) {
                                                             return true
                                                         }

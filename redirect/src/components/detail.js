@@ -23,7 +23,9 @@ export default class Edit extends Component {
             dateAccept: "",
             namePickUp: "",
             company: "",
-            urlQR: ""
+            urlQR: "",
+            department: "",
+            other: "",
         }
     }
 
@@ -32,11 +34,22 @@ export default class Edit extends Component {
     }
 
     componentDidMount = async () => {
+        if ((localStorage.getItem('isLogin') !== null) && (localStorage.getItem('username') !== null) && (localStorage.getItem('name') !== null)) {
+            let databaseToken = firebase.database().ref("users/" + localStorage.getItem('username'));
+            databaseToken.once('value', async (snapshot) => {
+                if (localStorage.getItem('isLogin') === snapshot.val().token && localStorage.getItem('name') === snapshot.val().user) {
+                    if (this.props.history.location.search.startsWith('?id=')) {
+                        let query = this.props.history.location.search.split('?id=')
+                        this.props.history.push('/edit?id=' + query[1])
+                    }
+                }
+            })
+        }
 
         if (this.props.history.location.search.startsWith('?id=')) {
             let query = this.props.history.location.search.split('?id=')
             this.setState({
-                urlQR : "https://psupktmaterial.firebaseapp.com?id=" + query[1]
+                urlQR: "https://psupktmaterial.firebaseapp.com/detail?id=" + query[1]
             })
             await firebase.database().ref("myURL/" + query[1]).once('value', async (snapshot) => {
                 if (snapshot.exists()) {
@@ -53,7 +66,9 @@ export default class Edit extends Component {
                         numberPieces: snapshot.val().numberPieces,
                         dateAccept: snapshot.val().dateAccept,
                         namePickUp: snapshot.val().namePickUp,
-                        company: snapshot.val().company
+                        company: snapshot.val().company,
+                        department: snapshot.val().department,
+                        other: snapshot.val().other,
                     })
                 } else {
                 }
@@ -103,100 +118,126 @@ export default class Edit extends Component {
                                         fgColor="#000000"
                                         level="Q"
                                         style={{ width: 256 }}
-                                        value= {this.state.urlQR}
+                                        value={this.state.urlQR}
                                     />
                                 </div>
 
                                 <div className="inputBlock-line">
-                                    {/* <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" > <span className="spanFont">รหัสครุภัณฑ์</span></div>                                   
-                                    <input type="text" className="form-control mb-2 mr-sm-2 inputL"
-                                        placeholder="Your Answer" name="durableCode" required onChange={this.handleInput} value={this.state.durableCode} autoComplete="off" /> */}
+
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >รหัสครุภัณฑ์</div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="durableCode" required onChange={this.handleInput} value={this.state.durableCode} autoComplete="off" />
+                                    - {this.state.durableCode}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="durableCode" required onChange={this.handleInput} value={this.state.durableCode} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >รายการ </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="listMaterial" required onChange={this.handleInput} value={this.state.listMaterial} autoComplete="off" />
+                                    - {this.state.listMaterial}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="listMaterial" required onChange={this.handleInput} value={this.state.listMaterial} autoComplete="off" /> */}
+                                </div>
+
+                                <div className="inputBlock-line">
+                                    <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >คณะ/หน่วยงาน </div>
+                                    - {this.state.department}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="department" required onChange={this.handleInput} value={this.state.department} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >ยี่ห้อ/ชนิด/ขนาด/คุณลักษณะ </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="attribute" required onChange={this.handleInput} value={this.state.attribute} autoComplete="off" />
+                                    - {this.state.attribute}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="attribute" required onChange={this.handleInput} value={this.state.attribute} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >หมายเลขเครื่อง </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="serialNumber" required onChange={this.handleInput} value={this.state.serialNumber} autoComplete="off" />
+                                    - {this.state.serialNumber}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="serialNumber" required onChange={this.handleInput} value={this.state.serialNumber} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >ราคาต่อหน่วย </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="price" required onChange={this.handleInput} value={this.state.price} autoComplete="off" />
-                                </div>
-
-                                <div className="inputBlock-line">
-                                    <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >สถานที่เก็บ </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="storageLocation" required onChange={this.handleInput} value={this.state.storageLocation} autoComplete="off" />
+                                    - {this.state.price}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="price" required onChange={this.handleInput} value={this.state.price} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >จำนวน </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="numberPieces" required onChange={this.handleInput} value={this.state.numberPieces} autoComplete="off" />
+                                    - {this.state.numberPieces}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="numberPieces" required onChange={this.handleInput} value={this.state.numberPieces} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >วันที่ตรวจรับ </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="dateAccept" required onChange={this.handleInput} value={this.state.dateAccept} autoComplete="off" />
+                                    - {this.state.dateAccept}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="dateAccept" required onChange={this.handleInput} value={this.state.dateAccept} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >ชื่อผู้เบิกครุภัณฑ์ </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="namePickUp" required onChange={this.handleInput} value={this.state.namePickUp} autoComplete="off" />
+                                    - {this.state.namePickUp}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="namePickUp" required onChange={this.handleInput} value={this.state.namePickUp} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >บริษัท/ห้างร้าน/ที่จัดซื้อ </div>
-                                    <input type="text" className="form-control mb-2 mr-sm-2"
-                                        placeholder="Your Answer" name="company" required onChange={this.handleInput} value={this.state.company} autoComplete="off" />
+                                    - {this.state.company}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="company" required onChange={this.handleInput} value={this.state.company} autoComplete="off" /> */}
                                 </div>
 
                                 <div className="inputBlock-line">
+                                    <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >สถานที่เก็บ </div>
+                                    - {this.state.storageLocation}
+                                    {/* <input type="text" className="form-control mb-2 mr-sm-2"
+                                        placeholder="Your Answer" name="storageLocation" required onChange={this.handleInput} value={this.state.storageLocation} autoComplete="off" /> */}
+                                </div>
+
+                                <div className="inputBlock-line">
+                                    - {this.state.materialStatus}
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" >สถานะครุภัณฑ์ </div>
                                     <div className="inputBlock-line">
                                         <div className="custom-control custom-radio">
-                                            <input type="radio" id="ปกติ" name="materialStatus" checked={this.state.materialStatus === 'ปกติ'} className="custom-control-input" value="ปกติ" onChange={this.handleInput}></input>
+                                            <input type="radio" id="ปกติ" name="materialStatus" checked={this.state.materialStatus === 'ปกติ' && this.state.other === ""} className="custom-control-input" value="ปกติ" onChange={this.handleInput}></input>
                                             <label className="custom-control-label" htmlFor="ปกติ">ปกติ</label>
                                         </div>
                                     </div>
                                     <div className="inputBlock-line">
                                         <div className="custom-control custom-radio">
-                                            <input type="radio" id="ชำรุด" name="materialStatus" checked={this.state.materialStatus === 'ชำรุด'} className="custom-control-input" value="ชำรุด" onChange={this.handleInput}></input>
+                                            <input type="radio" id="ชำรุด" name="materialStatus" checked={this.state.materialStatus === 'ชำรุด' && this.state.other === ""} className="custom-control-input" value="ชำรุด" onChange={this.handleInput}></input>
                                             <label className="custom-control-label" htmlFor="ชำรุด">ชำรุด</label>
                                         </div>
                                     </div>
                                     <div className="inputBlock-line">
                                         <div className="custom-control custom-radio">
-                                            <input type="radio" id="รอจำหน่าย" name="materialStatus" checked={this.state.materialStatus === 'รอจำหน่าย'} className="custom-control-input" value="รอจำหน่าย" onChange={this.handleInput}></input>
+                                            <input type="radio" id="รอจำหน่าย" name="materialStatus" checked={this.state.materialStatus === 'รอจำหน่าย' && this.state.other === ""} className="custom-control-input" value="รอจำหน่าย" onChange={this.handleInput}></input>
                                             <label className="custom-control-label" htmlFor="รอจำหน่าย">รอจำหน่าย</label>
                                         </div>
                                     </div>
                                     <div className="inputBlock-line">
                                         <div className="custom-control custom-radio">
-                                            <input type="radio" id="โอนย้าย" name="materialStatus" checked={this.state.materialStatus === 'โอนย้าย'} className="custom-control-input" value="โอนย้าย" onChange={this.handleInput}></input>
+                                            <input type="radio" id="โอนย้าย" name="materialStatus" checked={this.state.materialStatus === 'โอนย้าย' && this.state.other === ""} className="custom-control-input" value="โอนย้าย" onChange={this.handleInput}></input>
                                             <label className="custom-control-label" htmlFor="โอนย้าย">โอนย้าย</label>
                                         </div>
                                     </div>
 
+                                    <div className="inputBlock-line ">
+                                        <div className="custom-control custom-radio d-block">
+
+                                            <input type="radio" id="อื่น ๆ" name="materialStatus" checked={this.state.other !== '' && this.state.materialStatus === 'อื่น ๆ'} className="custom-control-input" value="อื่น ๆ" onChange={this.handleInput}></input>
+                                            <label className="custom-control-label" htmlFor="อื่น ๆ">อื่น ๆ</label>
+                                            <input type="text" className="form-control" style={{ width: "" }}
+                                                name="other" onChange={this.handleInput} value={this.state.other} autoComplete="off" />
+
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -205,7 +246,7 @@ export default class Edit extends Component {
                                     <div className="freebirdFormviewerViewItemsItemItemTitle" dir="auto" role="heading" aria-level="2" ></div>
                                     <div className="inputBlock-line float-right">
 
-                                        <button type="submit" className="btn btn-primary mb-2" style={{ width: "100px", height: "37px" }} onClick={this.goEdit}>EDIT</button>
+                                        <button type="submit" className="btn btn-primary mb-2" style={{ width: "100px", height: "37px" }} onClick={this.goEdit}>CHECK</button>
 
                                     </div>
                                 </div>

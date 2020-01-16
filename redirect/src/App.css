@@ -48,8 +48,8 @@
   z-index: 1;
   background: #FFFFFF;
   max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
+  margin:auto ;
+  padding: 35px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
@@ -71,7 +71,7 @@
   background: #0085ad;
   width: 100%;
   border: 0;
-  padding: 15px;
+  padding: 6.7px;
   color: #FFFFFF;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
@@ -168,14 +168,6 @@ td {
   /* overflow-x:auto; */
   word-wrap: break-word;
   
-}
-
-/* .spins {
-  margin-top: 10%;
-} */
-
-button {
-width: 80px !important;
 }
 
 table.table-fit {
@@ -285,9 +277,102 @@ table.table-fit tbody td, table.table-fit tfoot td {
 .qrcode-item {
   width: 100%;
   margin: 0 !important;
-  /* display: flex;
- flex-wrap: wrap; */
+
 }
+
+.page-link:focus {
+  box-shadow: none
+}
+
+#mySidenav {
+  width: 280px;
+}
+#main {
+  transition: margin-left 0.5s;
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  word-break: break-word;
+  -ms-overflow-style: none;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+.sidenav::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  color: #818181;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.openNav {
+  color: #f1f1f1;
+  cursor: pointer;
+}
+.text-email2 {
+  font-size: 18px;
+  color: #f1f1f1;
+  margin-bottom: 25px;
+}
+.text-email3 {
+  margin-bottom: 20px;
+  font-size: 90px;
+  color: #f1f1f1;
+}
+.text-logout {
+  cursor: pointer;
+  transition: 0.7s ease;
+  display: block;
+  color: #818181;
+  padding: 15px 32px;
+  text-decoration: none;
+  font-size: 20px;
+}
+.text-logout:hover:not(.active) {
+  transition: 0.7s ease;
+  border-radius: 20px;
+  background-color: #a2cfff33;
+  color: white;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.text-ilogout {
+  font-size: 20px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+.font-qr-code {
+  font-size: 9.5px;
+}
+
 
 
 
