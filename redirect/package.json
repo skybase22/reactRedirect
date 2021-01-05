@@ -5,7 +5,7 @@
   "dependencies": {
     "@syncfusion/ej2-react-grids": "^17.3.16",
     "@trendmicro/react-sidenav": "^0.4.5",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "base-64": "^0.1.0",
     "bootstrap": "^4.3.1",
     "dynamic-qr-code-generator": "^0.1.0",
